@@ -1,2 +1,2 @@
-# my-project
+# my project
 BELAJAR LARAVEL 9
