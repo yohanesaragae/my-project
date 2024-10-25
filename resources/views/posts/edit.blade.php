@@ -32,7 +32,7 @@
         <button type="submit" class="btn btn-primary">Simpan</button>
     </form>
 
-    <form method="POST" action="{{ url("posts/$post->id") }}"
+    <form method="POST" action="{{ url("posts/$post->id") }}">
         @method('DELETE')
         @csrf
         <button type="submit" class="btn btn-danger">Hapus</button>
