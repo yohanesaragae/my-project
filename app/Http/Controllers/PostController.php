@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\BlogPosted;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -16,8 +18,10 @@ class PostController extends Controller
      */
     public function index()
     {
-
-        $posts = Post::active()->withTrashed()->get();
+        if (!Auth::check()) {
+            return redirect('login');
+        }
+        $posts = Post::active()->get();
         $view_data = [
             'posts' => $posts,
 
@@ -32,6 +36,9 @@ class PostController extends Controller
      */
     public function create()
     {
+        if (!Auth::check()) {
+            return redirect('login');
+        }
         return view('posts.create');
     }
 
@@ -43,6 +50,10 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+        if (!Auth::check()) {
+            return redirect('login');
+        }
+
         $title = $request->input('title');
         $content = $request->input('content');
 
@@ -50,7 +61,8 @@ class PostController extends Controller
             'title' => $title,
             'content' => $content,
         ]);
-
+        
+        \Mail::to('admin@codepolitan.com')->send(new BlogPosted());
 
         return redirect('posts');
     }
@@ -63,6 +75,9 @@ class PostController extends Controller
      */
     public function show($id)
     {
+        if (!Auth::check()) {
+            return redirect('login');
+        }
 
         $post = Post::where('id',  $id)->first();
         $comments = $post->comments()->limit(2)->get();
@@ -84,6 +99,10 @@ class PostController extends Controller
      */
     public function edit($id)
     {
+
+        if (!Auth::check()) {
+            return redirect('login');
+        }
         $post = Post::where('id', '=', $id)
             ->first();
         $view_data = [
@@ -101,6 +120,10 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (!Auth::check()) {
+            return redirect('login');
+        }
+        
         $title = $request->input('title');
         $content = $request->input('content');
 
@@ -121,6 +144,9 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
+        if (!Auth::check()) {
+            return redirect('login');
+        }
         Post::where('id', $id)
             ->delete();
         return redirect('posts');

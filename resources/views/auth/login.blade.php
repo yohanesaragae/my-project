@@ -16,7 +16,7 @@
                 </div>
                 @endif
 
-                <form methode="POST" action="{{ url('login') }}" class="form-control">
+                <form method="POST" action="{{ url('login') }}" class="form-control">
                     @csrf
 
                     <div class="mb-3">
