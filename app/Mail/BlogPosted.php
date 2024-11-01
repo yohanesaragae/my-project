@@ -19,9 +19,9 @@ class BlogPosted extends Mailable
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($post)
     {
-        //
+        $this->post = $post;
     }
 
     /**
@@ -32,7 +32,7 @@ class BlogPosted extends Mailable
     public function envelope()
     {
         return new Envelope(
-            from: new Address('piteraragae@gmail.com', 'Anis Aragae'),
+            from: new Address('admin@codepolitan.com', 'Admin Codepolitan'),
             subject: 'Blog Baru',
         );
     }
@@ -46,6 +46,9 @@ class BlogPosted extends Mailable
     {
         return new Content(
             view: 'mails.blog_posted',
+            with: [
+                'post' => $this->post
+            ]
         );
     }
 
